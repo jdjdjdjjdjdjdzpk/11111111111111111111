@@ -44,8 +44,8 @@ const Header: React.FC<HeaderProps> = ({ searchTerm, onSearchChange, activeView,
         return true;
     }
   }).sort((a, b) => {
-    const timeA = typeof a.timestamp === 'string' ? new Date(a.timestamp).getTime() : new Date(a.timestamp).getTime();
-    const timeB = typeof b.timestamp === 'string' ? new Date(b.timestamp).getTime() : new Date(b.timestamp).getTime();
+    const timeA = a.timestamp ? new Date(a.timestamp).getTime() : 0;
+    const timeB = b.timestamp ? new Date(b.timestamp).getTime() : 0;
     return timeB - timeA;
   });
 
@@ -55,11 +55,9 @@ const Header: React.FC<HeaderProps> = ({ searchTerm, onSearchChange, activeView,
         setShowNotifications(false);
       }
     };
-
     if (showNotifications) {
       document.addEventListener('mousedown', handleClickOutside);
     }
-
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
@@ -67,124 +65,85 @@ const Header: React.FC<HeaderProps> = ({ searchTerm, onSearchChange, activeView,
 
   const getTitle = () => {
     switch (activeView) {
-      case 'dashboard':
-        return t('dashboard');
-      case 'contacts':
-        return t('contacts');
-      case 'opportunities':
-        return t('opportunities');
-      case 'tasks':
-        return t('tasksReminders');
-      case 'calendar':
-        return t('calendarAppointments');
-      case 'email':
-        return t('emailCampaigns');
-      case 'analytics':
-        return t('analyticsReports');
-      case 'integrations':
-        return t('integrationsTitle');
-      case 'settings':
-        return t('settings');
-      case 'join-organization':
-        return 'Rejoindre une Organisation';
-      case 'organization-management':
-        return 'Gestion de l\'Organisation';
-      default:
-        return t('dashboard');
+      case 'dashboard': return t('dashboard');
+      case 'contacts': return t('contacts');
+      case 'opportunities': return t('opportunities');
+      case 'tasks': return t('tasksReminders');
+      case 'calendar': return t('calendarAppointments');
+      case 'email': return t('emailCampaigns');
+      case 'analytics': return t('analyticsReports');
+      case 'integrations': return t('integrationsTitle');
+      case 'settings': return t('settings');
+      case 'join-organization': return 'Rejoindre une Organisation';
+      case 'organization-management': return 'Gestion de l\'Organisation';
+      default: return t('dashboard');
     }
   };
 
   const getDescription = () => {
     switch (activeView) {
-      case 'dashboard':
-        return t('welcomeDescription');
-      case 'contacts':
-        return t('manageContacts');
-      case 'opportunities':
-        return t('trackOpportunities');
-      case 'tasks':
-        return t('manageTasks');
-      case 'calendar':
-        return t('scheduleAppointments');
-      case 'email':
-        return t('manageEmailCampaigns');
-      case 'analytics':
-        return t('trackPerformance');
-      case 'integrations':
-        return t('connectTools');
-      case 'settings':
-        return t('preferences');
-      case 'join-organization':
-        return 'Découvrez et rejoignez des organisations qui correspondent à vos intérêts';
-      case 'organization-management':
-        return 'Gérez les informations et paramètres de votre organisation';
-      default:
-        return t('welcomeDescription');
+      case 'dashboard': return t('welcomeDescription');
+      case 'contacts': return t('manageContacts');
+      case 'opportunities': return t('trackOpportunities');
+      case 'tasks': return t('manageTasks');
+      case 'calendar': return t('scheduleAppointments');
+      case 'email': return t('manageEmailCampaigns');
+      case 'analytics': return t('trackPerformance');
+      case 'integrations': return t('connectTools');
+      case 'settings': return t('preferences');
+      case 'join-organization': return 'Découvrez et rejoignez des organisations qui correspondent à vos intérêts';
+      case 'organization-management': return 'Gérez les informations et paramètres de votre organisation';
+      default: return t('welcomeDescription');
     }
   };
 
   const getNotificationIcon = (type: string) => {
     switch (type) {
-      case 'success':
-        return <CheckCircle size={16} className="text-green-600" />;
-      case 'warning':
-        return <AlertTriangle size={16} className="text-yellow-600" />;
-      case 'error':
-        return <X size={16} className="text-red-600" />;
-      case 'reminder':
-        return <Clock size={16} className="text-blue-600" />;
-      default:
-        return <Info size={16} className="text-blue-600" />;
+      case 'success': return <CheckCircle size={16} className="text-green-600" />;
+      case 'warning': return <AlertTriangle size={16} className="text-yellow-600" />;
+      case 'error': return <X size={16} className="text-red-600" />;
+      case 'reminder': return <Clock size={16} className="text-blue-600" />;
+      default: return <Info size={16} className="text-blue-600" />;
     }
   };
 
   const getNotificationColor = (type: string) => {
     switch (type) {
-      case 'success':
-        return 'border-l-green-500 bg-green-50';
-      case 'warning':
-        return 'border-l-yellow-500 bg-yellow-50';
-      case 'error':
-        return 'border-l-red-500 bg-red-50';
-      case 'reminder':
-        return 'border-l-blue-500 bg-blue-50';
-      default:
-        return 'border-l-blue-500 bg-blue-50';
+      case 'success': return 'border-l-green-500 bg-green-50';
+      case 'warning': return 'border-l-yellow-500 bg-yellow-50';
+      case 'error': return 'border-l-red-500 bg-red-50';
+      case 'reminder': return 'border-l-blue-500 bg-blue-50';
+      default: return 'border-l-blue-500 bg-blue-50';
     }
   };
 
   const getCategoryIcon = (category: string) => {
     switch (category) {
-      case 'task':
-        return '📋';
-      case 'appointment':
-        return '📅';
-      case 'opportunity':
-        return '💼';
-      case 'contact':
-        return '👤';
-      case 'reminder':
-        return '⏰';
-      default:
-        return 'ℹ️';
+      case 'task': return '📋';
+      case 'appointment': return '📅';
+      case 'opportunity': return '💼';
+      case 'contact': return '👤';
+      case 'reminder': return '⏰';
+      default: return 'ℹ️';
     }
   };
 
   const handleNotificationClick = async (notification: any) => {
-    if (!notification.read) {
-      await markAsRead(notification.id);
-    }
-
-    if (notification.relatedView) {
-      const viewName = notification.relatedView.name as View;
-      onViewChange(viewName);
-
-      if (notification.actionData?.searchTerm) {
-        onSearchChange(notification.actionData.searchTerm);
+    try {
+      if (!notification.read) {
+        await markAsRead(notification.id);
       }
+      if (notification.relatedView) {
+        const viewName = notification.relatedView.name as View;
+        onViewChange(viewName);
+        if (notification.actionData?.searchTerm) {
+          onSearchChange(notification.actionData.searchTerm);
+        }
+      }
+      setShowNotifications(false);
+    } catch (error) {
+      console.error('Error marking notification as read:', error);
     }
-
-    setShowNotifications(false);
   };
 
   const handleMarkAllAsRead = async () => {
@@ -213,28 +172,22 @@ const Header: React.FC<HeaderProps> = ({ searchTerm, onSearchChange, activeView,
 
   const handleStatsClick = (statType: string) => {
     setShowProfileSidebar(false);
-
     switch (statType) {
-      case 'contacts':
-        onViewChange('contacts');
-        break;
-      case 'opportunities':
-        onViewChange('opportunities');
-        break;
-      case 'tasks':
-        onViewChange('tasks');
-        break;
-      case 'appointments':
-        onViewChange('calendar');
-        break;
-      default:
-        break;
+      case 'contacts': onViewChange('contacts'); break;
+      case 'opportunities': onViewChange('opportunities'); break;
+      case 'tasks': onViewChange('tasks'); break;
+      case 'appointments': onViewChange('calendar'); break;
+      default: break;
     }
   };
 
-  const formatTime = (timestamp: string | Date) => {
-    const now = new Date();
+  // ✅ Safe time formatter
+  const formatTime = (timestamp?: string | Date) => {
+    if (!timestamp) return '';
     const date = typeof timestamp === 'string' ? new Date(timestamp) : timestamp;
+    if (isNaN(date.getTime())) return '';
+
+    const now = new Date();
     const diff = now.getTime() - date.getTime();
     const minutes = Math.floor(diff / (1000 * 60));
     const hours = Math.floor(diff / (1000 * 60 * 60));
@@ -247,10 +200,29 @@ const Header: React.FC<HeaderProps> = ({ searchTerm, onSearchChange, activeView,
     return `Il y a ${days} jours`;
   };
 
+  // Safe notification data access
+  const getSafeNotificationData = (notification: any) => {
+    return {
+      id: notification.id || '',
+      title: notification.title || 'Notification',
+      message: notification.message || '',
+      type: notification.type || 'info',
+      category: notification.category || 'general',
+      read: Boolean(notification.read),
+      timestamp: notification.timestamp,
+      avatar: notification.avatar,
+      time: notification.time,
+      relatedView: notification.relatedView,
+      actionData: notification.actionData
+    };
+  };
+
   return (
     <>
+      {/* HEADER */}
       <header className="glass-effect border-b border-white/20 px-4 lg:px-8 py-4 lg:py-6 sticky top-0 z-30">
         <div className="flex items-center justify-between">
+          {/* LEFT */}
           <div className="flex items-center space-x-4 min-w-0 flex-1">
             <div className="relative hidden sm:block">
               <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-blue-500 to-indigo-600 rounded-2xl flex items-center justify-center shadow-lg">
@@ -268,8 +240,10 @@ const Header: React.FC<HeaderProps> = ({ searchTerm, onSearchChange, activeView,
             </div>
           </div>
 
+          {/* RIGHT */}
           <div className="flex items-center space-x-3 lg:space-x-6">
-            {['contacts', 'opportunities', 'tasks', 'calendar', 'email', 'join-organization'].includes(activeView) && (
+            {/* SEARCH BAR */}
+            {['contacts','opportunities','tasks','calendar','email','join-organization'].includes(activeView) && (
               <div className="relative group hidden md:block">
                 <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-slate-400 group-focus-within:text-blue-500 transition-colors" size={20} />
                 <input
@@ -287,12 +261,14 @@ const Header: React.FC<HeaderProps> = ({ searchTerm, onSearchChange, activeView,
               </div>
             )}
 
-            {['contacts', 'opportunities', 'tasks', 'calendar', 'email', 'join-organization'].includes(activeView) && (
+            {/* MOBILE SEARCH ICON */}
+            {['contacts','opportunities','tasks','calendar','email','join-organization'].includes(activeView) && (
               <button className="md:hidden p-3 glass-effect rounded-xl hover:shadow-lg transition-all duration-300 group">
                 <Search size={18} className="text-slate-600 group-hover:text-blue-600 transition-colors" />
               </button>
             )}
 
+            {/* NOTIFICATIONS */}
             <div className="relative" ref={notificationsRef}>
               <button
                 onClick={() => setShowNotifications(!showNotifications)}
@@ -308,6 +284,7 @@ const Header: React.FC<HeaderProps> = ({ searchTerm, onSearchChange, activeView,
 
               {showNotifications && (
                 <div className="absolute right-0 mt-2 w-80 sm:w-96 bg-white rounded-xl shadow-2xl border border-gray-100 z-50 max-h-[32rem] overflow-hidden">
+                  {/* HEADER */}
                   <div className="p-4 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-indigo-50">
                     <div className="flex items-center justify-between mb-3">
                       <h3 className="font-semibold text-gray-900 flex items-center space-x-2">
@@ -337,6 +314,7 @@ const Header: React.FC<HeaderProps> = ({ searchTerm, onSearchChange, activeView,
                       </div>
                     </div>
 
+                    {/* FILTERS */}
                     <div className="flex items-center space-x-1 overflow-x-auto">
                       {[
                         { key: 'all', label: 'Toutes', count: displayNotifications.length },
@@ -360,6 +338,7 @@ const Header: React.FC<HeaderProps> = ({ searchTerm, onSearchChange, activeView,
                     </div>
                   </div>
 
+                  {/* LIST */}
                   <div className="max-h-80 overflow-y-auto">
                     {filteredNotifications.length === 0 ? (
                       <div className="p-8 text-center text-gray-500">
@@ -368,70 +347,67 @@ const Header: React.FC<HeaderProps> = ({ searchTerm, onSearchChange, activeView,
                         <p className="text-sm">Vous êtes à jour !</p>
                       </div>
                     ) : (
-                      filteredNotifications.map((notification) => (
-                        <div
-                          key={notification.id}
-                          className={`p-4 border-l-4 border-b border-gray-50 hover:bg-gray-50 transition-colors cursor-pointer group ${
-                            getNotificationColor(notification.type)
-                          } ${!notification.read ? 'bg-blue-50/30' : ''}`}
-                          onClick={() => handleNotificationClick(notification)}
-                        >
-                          <div className="flex items-start justify-between">
-                            <div className="flex items-start space-x-3 flex-1 min-w-0">
-                              <div className="flex-shrink-0 mt-0.5">
-                                {notification.avatar ? (
-                                  <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full w-8 h-8 flex items-center justify-center text-white text-xs font-bold">
-                                    {notification.avatar}
+                      filteredNotifications.map((notification, index) => {
+                        const safeNotification = getSafeNotificationData(notification);
+                        return (
+                          <div
+                            key={safeNotification.id || `notification-${index}-${safeNotification.timestamp || Date.now()}`}
+                            className={`p-4 border-l-4 border-b border-gray-50 hover:bg-gray-50 transition-colors cursor-pointer group ${getNotificationColor(safeNotification.type)} ${!safeNotification.read ? 'bg-blue-50/30' : ''}`}
+                            onClick={() => handleNotificationClick(safeNotification)}
+                          >
+                            <div className="flex items-start justify-between">
+                              <div className="flex items-start space-x-3 flex-1 min-w-0">
+                                <div className="flex-shrink-0 mt-0.5">
+                                  {safeNotification.avatar ? (
+                                    <div className="bg-gradient-to-br from-blue-500 to-indigo-600 rounded-full w-8 h-8 flex items-center justify-center text-white text-xs font-bold">
+                                      {safeNotification.avatar}
+                                    </div>
+                                  ) : (
+                                    <div className="bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center">
+                                      {getNotificationIcon(safeNotification.type)}
+                                    </div>
+                                  )}
+                                </div>
+                                <div className="flex-1 min-w-0">
+                                  <div className="flex items-center space-x-2 mb-1">
+                                    <span className="text-sm">{getCategoryIcon(safeNotification.category)}</span>
+                                    <h4 className="font-medium text-gray-900 text-sm truncate">{safeNotification.title}</h4>
+                                    {!safeNotification.read && <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>}
                                   </div>
-                                ) : (
-                                  <div className="bg-gray-100 rounded-full w-8 h-8 flex items-center justify-center">
-                                    {getNotificationIcon(notification.type)}
+                                  <p className="text-gray-600 text-sm mb-2 line-clamp-2">{safeNotification.message}</p>
+                                  <div className="flex items-center justify-between">
+                                    <p className="text-gray-400 text-xs">
+                                      {safeNotification.time || formatTime(safeNotification.timestamp)}
+                                    </p>
                                   </div>
+                                </div>
+                              </div>
+                              <div className="flex items-center space-x-1 ml-2">
+                                {!safeNotification.read && (
+                                  <button
+                                    onClick={async (e) => {
+                                      e.stopPropagation();
+                                      try {
+                                        await markAsRead(safeNotification.id);
+                                      } catch (error) {
+                                        console.error('Failed to mark notification as read:', error);
+                                      }
+                                    }}
+                                    className="text-blue-600 hover:text-blue-700 text-xs font-medium px-2 py-1 rounded-md hover:bg-blue-50 transition-colors opacity-0 group-hover:opacity-100"
+                                    title="Marquer comme lu"
+                                  >
+                                    ✓
+                                  </button>
                                 )}
                               </div>
-                              <div className="flex-1 min-w-0">
-                                <div className="flex items-center space-x-2 mb-1">
-                                  <span className="text-sm">{getCategoryIcon(notification.category)}</span>
-                                  <h4 className="font-medium text-gray-900 text-sm truncate">{notification.title}</h4>
-                                  {!notification.read && (
-                                    <div className="w-2 h-2 bg-blue-500 rounded-full flex-shrink-0"></div>
-                                  )}
-                                </div>
-                                <p className="text-gray-600 text-sm mb-2 line-clamp-2">{notification.message}</p>
-                                <div className="flex items-center justify-between">
-                                  <p className="text-gray-400 text-xs">{notification.time || formatTime(notification.timestamp)}</p>
-                                  {notification.relatedView && (
-                                    <span className="text-xs text-blue-600 font-medium opacity-0 group-hover:opacity-100 transition-opacity">
-                                      Cliquer pour voir →
-                                    </span>
-                                  )}
-                                </div>
-                              </div>
-                            </div>
-                            <div className="flex items-center space-x-1 ml-2">
-                              {!notification.read && (
-                                <button
-                                  onClick={async (e) => {
-                                    e.stopPropagation();
-                                    try {
-                                      await markAsRead(notification.id);
-                                    } catch (error) {
-                                      console.error('Failed to mark notification as read:', error);
-                                    }
-                                  }}
-                                  className="text-blue-600 hover:text-blue-700 text-xs font-medium px-2 py-1 rounded-md hover:bg-blue-50 transition-colors opacity-0 group-hover:opacity-100"
-                                  title="Marquer comme lu"
-                                >
-                                  ✓
-                                </button>
-                              )}
                             </div>
                           </div>
-                        </div>
-                      ))
+                        );
+                      })
                     )}
                   </div>
 
+                  {/* FOOTER */}
                   {filteredNotifications.length > 0 && (
                     <div className="p-3 border-t border-gray-100 bg-gray-50">
                       <div className="flex items-center justify-between text-xs text-gray-500">
@@ -459,6 +435,7 @@ const Header: React.FC<HeaderProps> = ({ searchTerm, onSearchChange, activeView,
               )}
             </div>
 
+            {/* PROFILE BUTTON */}
             <button
               onClick={() => setShowProfileSidebar(true)}
               className="flex items-center space-x-2 lg:space-x-3 glass-effect rounded-xl px-3 lg:px-4 py-2 lg:py-3 hover:shadow-lg transition-all duration-300 group"
@@ -479,6 +456,7 @@ const Header: React.FC<HeaderProps> = ({ searchTerm, onSearchChange, activeView,
         </div>
       </header>
 
+      {/* PROFILE SIDEBAR */}
       <ProfileSidebar
         isOpen={showProfileSidebar}
         onClose={() => setShowProfileSidebar(false)}

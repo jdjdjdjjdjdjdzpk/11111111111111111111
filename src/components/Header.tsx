@@ -188,7 +188,11 @@ const Header: React.FC<HeaderProps> = ({ searchTerm, onSearchChange, activeView,
   };
 
   const handleMarkAllAsRead = async () => {
-    await markAllAsRead();
+    try {
+      await markAllAsRead();
+    } catch (error) {
+      console.error('Failed to mark all notifications as read:', error);
+    }
   };
 
   const handleLoadMore = () => {
@@ -409,7 +413,11 @@ const Header: React.FC<HeaderProps> = ({ searchTerm, onSearchChange, activeView,
                                 <button
                                   onClick={async (e) => {
                                     e.stopPropagation();
-                                    await markAsRead(notification.id);
+                                    try {
+                                      await markAsRead(notification.id);
+                                    } catch (error) {
+                                      console.error('Failed to mark notification as read:', error);
+                                    }
                                   }}
                                   className="text-blue-600 hover:text-blue-700 text-xs font-medium px-2 py-1 rounded-md hover:bg-blue-50 transition-colors opacity-0 group-hover:opacity-100"
                                   title="Marquer comme lu"

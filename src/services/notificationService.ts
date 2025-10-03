@@ -35,7 +35,7 @@ export interface NotificationListResponse {
 }
 
 export interface UnreadCountResponse {
-  unread_count: number;
+  unread: number;
 }
 
 class NotificationService {
@@ -64,7 +64,7 @@ class NotificationService {
       const response = await httpClient.get<UnreadCountResponse>(`${this.baseEndpoint}/unread-count`);
 
       if (response.success && response.data) {
-        return response.data.unread_count;
+        return response.data.unread;
       }
 
       return 0;
@@ -74,13 +74,19 @@ class NotificationService {
     }
   }
 
-  async markAsRead(notificationId: number): Promise<void> {
+  async markAsRead(notificationId: number): Promise<Notification> {
     try {
-      const response = await httpClient.post(`${this.baseEndpoint}/${notificationId}/read`);
+      const response = await httpClient.post<Notification>(`${this.baseEndpoint}/${notificationId}/read`);
 
       if (!response.success) {
         throw new Error(response.message || 'Failed to mark notification as read');
       }
+
+      if (!response.data) {
+        throw new Error('No data returned from mark as read');
+      }
+
+      return response.data;
     } catch (error) {
       console.error('Error marking notification as read:', error);
       throw error;

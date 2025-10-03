@@ -59,10 +59,10 @@ export const NotificationProvider = ({ children }: { children: ReactNode }) => {
 
   const markAsRead = useCallback(async (notificationId: number) => {
     try {
-      await notificationService.markAsRead(notificationId);
+      const updatedNotification = await notificationService.markAsRead(notificationId);
 
       setNotifications(prev =>
-        prev.map(n => (n.id === notificationId ? { ...n, read: true } : n))
+        prev.map(n => (n.id === notificationId ? updatedNotification : n))
       );
 
       setUnreadCount(prev => Math.max(0, prev - 1));
